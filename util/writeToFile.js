@@ -1,4 +1,5 @@
 const excel = require('excel4node');
+const { dataStyle, headerStyle, headerStyle2 } = require('./styleExcel');
 const validation = require('./validation');
 
 const writeToReport = (yplay, tip, slz, cnn) => {
@@ -15,81 +16,38 @@ const writeToReport = (yplay, tip, slz, cnn) => {
             showGridLines: false
         }
     });
+    worksheet.row(1).setHeight(9);    
+    worksheet.row(2).setHeight(35);
+    worksheet.row(3).setHeight(9);
+    worksheet.row(6).setHeight(9);
+    worksheet.row(12).setHeight(9);
+    worksheet.column(1).setWidth(2);
+    worksheet.column(2).setWidth(45);
+    worksheet.column(3).setWidth(32);
+    worksheet.row(7).filter();
 
-    worksheet.column(2).setWidth(25);
-    worksheet.column(3).setWidth(22);
-    worksheet.row(2).filter();
+    worksheet.cell(2,2,2,3,true).string('OPERADORES COM EPG REPORTV').style(headerStyle);    
 
-    worksheet.cell(2,2).string('Utilizador').style(headerStyle);    
-    worksheet.cell(2,3).string('Total usuários ativos').style(headerStyle);
+    worksheet.cell(4,2).string('Data de emissão:').style(headerStyle2);    
+    worksheet.cell(4,3).string('01/05/2022').style(dataStyle);
+    worksheet.cell(5,2).string('Mês de referência:').style(headerStyle2);    
+    worksheet.cell(5,3).string('Abr_2022').style(dataStyle);
 
-    worksheet.cell(3,2).string('SOFTX').style(dataStyle);
-    worksheet.cell(3,3).number(totalSoftx).style(dataStyle);
-    worksheet.cell(4,2).string('TIP').style(dataStyle);
-    worksheet.cell(4,3).number(totalTip).style(dataStyle);
-    worksheet.cell(5,2).string('TVN SLZ').style(dataStyle);
-    worksheet.cell(5,3).number(totalSLZ).style(dataStyle);
-    worksheet.cell(6,2).string('CNN').style(dataStyle);
-    worksheet.cell(6,3).number(totalCNN).style(dataStyle);
+    worksheet.cell(7,2).string('Operadores').style(headerStyle2);    
+    worksheet.cell(7,3).string('Número de assinantes').style(headerStyle2);
+    worksheet.cell(8,2).string('SOFTX').style(dataStyle);
+    worksheet.cell(8,3).number(totalSoftx).style(dataStyle);
+    worksheet.cell(9,2).string('TIP').style(dataStyle);
+    worksheet.cell(9,3).number(totalTip).style(dataStyle);
+    worksheet.cell(10,2).string('TVN SLZ').style(dataStyle);
+    worksheet.cell(10,3).number(totalSLZ).style(dataStyle);
+    worksheet.cell(11,2).string('CNN').style(dataStyle);
+    worksheet.cell(11,3).number(totalCNN).style(dataStyle);
 
-    workbook.write('test.xlsx');
-}
+    worksheet.cell(13,2).string('Número total de assinantes:').style(headerStyle2);
+    worksheet.cell(13,3).number((totalCNN+totalSLZ+totalSoftx+totalTip)).style(dataStyle);
 
-const headerStyle = {
-    alignment: {
-        horizontal: 'center',
-        vertical: 'center'
-    },
-    font: {
-        color: '#000000',
-        bold: true,
-        size: 12
-    },
-    fill: {
-        type: 'pattern',
-        patternType: 'solid',
-        bgColor: '#ffff00',
-        fgColor: '#ffff00',
-    },
-    border: { 
-        left: {
-            style: 'thin', 
-            color: '#000000' 
-        },
-        right: {
-            style: 'thin', 
-            color: '#000000'
-        },
-        top: {
-            style: 'thin', 
-            color: '#000000'
-        },
-        bottom: {
-            style: 'thin', 
-            color: '#000000'
-        },
-    }
-}
-
-const dataStyle = {
-    border: { 
-        left: {
-            style: 'thin', 
-            color: '#000000' 
-        },
-        right: {
-            style: 'thin', 
-            color: '#000000'
-        },
-        top: {
-            style: 'thin', 
-            color: '#000000'
-        },
-        bottom: {
-            style: 'thin', 
-            color: '#000000'
-        },
-    }
+    workbook.write(`Operadores com EPG ReporTV - ABR_2022.xlsx`);
 }
 
 module.exports = writeToReport;
