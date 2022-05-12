@@ -1,4 +1,5 @@
 const excel = require('excel4node');
+const { getLocaleDateString, getCurrentMonthYearFull } = require('./date');
 const { dataStyle, headerStyle, headerStyle2 } = require('./styleExcel');
 const validation = require('./validation');
 
@@ -29,9 +30,9 @@ const writeToReport = (yplay, tip, slz, cnn) => {
     worksheet.cell(2,2,2,3,true).string('OPERADORES COM EPG REPORTV').style(headerStyle);    
 
     worksheet.cell(4,2).string('Data de emissão:').style(headerStyle2);    
-    worksheet.cell(4,3).string('01/05/2022').style(dataStyle);
+    worksheet.cell(4,3).string(getLocaleDateString()).style(dataStyle);
     worksheet.cell(5,2).string('Mês de referência:').style(headerStyle2);    
-    worksheet.cell(5,3).string('Abr_2022').style(dataStyle);
+    worksheet.cell(5,3).string(getCurrentMonthYearFull()).style(dataStyle);
 
     worksheet.cell(7,2).string('Operadores').style(headerStyle2);    
     worksheet.cell(7,3).string('Número de assinantes').style(headerStyle2);
@@ -47,7 +48,7 @@ const writeToReport = (yplay, tip, slz, cnn) => {
     worksheet.cell(13,2).string('Número total de assinantes:').style(headerStyle2);
     worksheet.cell(13,3).number((totalCNN+totalSLZ+totalSoftx+totalTip)).style(dataStyle);
 
-    workbook.write(`Operadores com EPG ReporTV - ABR_2022.xlsx`);
+    workbook.write(`Operadores com EPG ReporTV - ${getCurrentMonthYearFull()}.xlsx`);
 }
 
 module.exports = writeToReport;
