@@ -22,13 +22,6 @@ const reportREPORTTV = (yplayPlatform, tipPlatform) => {
         }
     });
 
-    const worksheetCustomers = workbook.addWorksheet('Usuários', {
-        sheetView: {
-            showGridLines: false
-        }
-    });
-
-    // resultado worksheet begin
     worksheet.row(1).setHeight(9);    
     worksheet.row(2).setHeight(35);
     worksheet.row(3).setHeight(9);
@@ -57,33 +50,6 @@ const reportREPORTTV = (yplayPlatform, tipPlatform) => {
 
     worksheet.cell(13,2).string('Número total de assinantes:').style(headerStyle2);
     worksheet.cell(13,3).number((tipPlatform.total+yplayPlatform.total)).style(dataStyle);
-    // END
-
-    // Usuários worksheet begin
-    const customers = [
-        ...yplayPlatform.softxxCustomers, 
-        ...yplayPlatform.yplayPlatformCustomers,
-        ...tipPlatform.sulCustomers,
-        ...tipPlatform.slzCustomers
-    ];
-    const headerCustomers = ['ID', 'LOGIN', 'VENDOR'];
-
-    worksheetCustomers.row(1).setHeight(9);    
-    worksheetCustomers.column(1).setWidth(2);
-    worksheetCustomers.column(2).setWidth(32);
-    worksheetCustomers.column(3).setWidth(32);
-    worksheetCustomers.column(4).setWidth(32);
-    worksheetCustomers.row(2).filter();
-
-    headerCustomers.forEach((data, index)=>{
-        worksheetCustomers.cell(2,2+index).string(data).style(headerStyle2);
-    });
-    customers.forEach((customer, index)=>{
-        worksheetCustomers.cell(3+index, 2).number(customer.id).style(dataStyle);
-        worksheetCustomers.cell(3+index, 3).string(customer.login).style(dataStyle);
-        worksheetCustomers.cell(3+index, 4).string(customer.vendor).style(dataStyle);
-    });
-    // END
 
     workbook.write(path.join(__dirname, '..', 'output', `Operadores com EPG ReporTV - ${getCurrentMonthYearFull()}.xlsx`));
 }
