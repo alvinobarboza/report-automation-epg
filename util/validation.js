@@ -1,63 +1,49 @@
-const validation = (yplay, tip, slz, cnn) => {
-    const totalSoftx = validateYplaySoftx(yplay);
-    const { totalTip, totalSLZ, totalCNN } = validateGenericCount({tip, slz, cnn});
+const validation = (yplay, sul, slz) => {
+    const yplayPlatform = validateYplaySoftx(yplay);
+    const tipPlatform = validateTip(sul, slz);
 
     return {
-        totalSoftx,
-        totalTip,
-        totalSLZ,
-        totalCNN
+        yplayPlatform,
+        tipPlatform
     }
 }
 
 const validateYplaySoftx = (data) => {
-    const softx = [];
-    const LOGIN = 'login';
-    const PACKAGES = 'packages';
-    data.forEach(customer => {
-        if(customer.dealerid === 37){
-            softx.push(customer)
-        }
-    })
+    const yplayPlatform = {
+        softxxTotal: 0,
+        softxxCustomers: [],
+        yplayPlatformTotal: 0,
+        yplayPlatformCustomers: [],
+        total: 0
+    }
 
-    const softxGrouped = groupByGeneric(softx, LOGIN, PACKAGES);
-
-    return softxGrouped.length;
+    for (let i = 0; i < data.length; i++) {
+        if(data[i].dealerid === 37){
+            yplayPlatform.softxxTotal++;
+            yplayPlatform.softxxCustomers.push(data[i])
+        }else{
+            yplayPlatform.yplayPlatformTotal++;
+            yplayPlatform.yplayPlatformCustomers.push(data[i]);
+        }        
+    }
+    yplayPlatform.total = yplayPlatform.softxxTotal+yplayPlatform.yplayPlatformTotal;
+    return yplayPlatform;
 }
 
-const validateGenericCount = (data) => {
-    const {tip, slz, cnn} = data;
-    const LOGIN = 'login';
-    const PACKAGES = 'packages';
-    
-    const tipGrouped = groupByGeneric(tip, LOGIN, PACKAGES);
-    const slzGrouped = groupByGeneric(slz, LOGIN, PACKAGES);
-    const cnnGrouped = groupByGeneric(cnn, LOGIN, PACKAGES);
-
+const validateTip = (sul, slz) => {
+    for (let i = 0; i < sul.length; i++) {
+        sul[i].vendor = 'TIP';        
+    }
+    for (let i = 0; i < slz.length; i++) {
+        slz[i].vendor = 'SLZ';        
+    }
     return {
-        totalTip: tipGrouped.length,
-        totalSLZ: slzGrouped.length,
-        totalCNN: cnnGrouped.length
+        sulTotal: sul.length,
+        sulCustomers: sul,
+        slzTotal: slz.length,
+        slzCustomers: slz,
+        total: sul.length + slz.length
     }
 }
-
-const groupByGeneric = (ungrouped, delimiter, dataToGroup) => {
-    const group = new Set();
-    ungrouped.forEach(r => group.add(r[delimiter]));
-    const groupedValues = [];
-    group.forEach(d => {
-        const value = {};
-        value[delimiter] = d;
-        value[dataToGroup] = [];
-        ungrouped.forEach(e => {
-            if(e[delimiter] === d){
-                value[dataToGroup].push(e)
-            }
-        });
-        groupedValues.push(value);
-    });
-    return groupedValues;
-}
-
 
 module.exports = validation;

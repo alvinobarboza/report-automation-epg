@@ -3,7 +3,6 @@ require('dotenv').config();
 const SMSYPLAY = 'https://sms.yplay.com.br';
 const MWTIP = 'https://mw.tvnsul.com.br';
 const MWSLZ = 'https://mwslz.tvn.com.br';
-const MWCNN = 'https://mw.cnnbrasil.com.br';
 const REPORT = '/api/report/reportSelection';
 
 const loginYplaySMS = process.env.loginYplaySMS;
@@ -14,9 +13,6 @@ const secretTipMW = process.env.secretTipMW;
 
 const loginSlzMW = process.env.loginSlzMW;
 const secretSlzMW = process.env.secretSlzMW;
-
-const loginCNNMW = process.env.loginCNNMW;
-const secretCNNMW = process.env.secretCNNMW;
 
 const smsBody = (id) => `{
     "data":{
@@ -37,7 +33,6 @@ const mwHeader = (token) => {
 
 module.exports = {
     SMSYPLAY,
-    MWCNN,
     MWSLZ,
     MWTIP,
     REPORT,
@@ -47,8 +42,6 @@ module.exports = {
     secretTipMW,
     loginSlzMW,
     secretSlzMW,
-    loginCNNMW,
-    secretCNNMW,
     smsBody,
     mwBody,
     smsHeader,

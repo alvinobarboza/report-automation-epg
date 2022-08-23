@@ -10,16 +10,13 @@ const {
     loginTipMW, 
     secretTipMW, 
     loginSlzMW, 
-    secretSlzMW, 
-    loginCNNMW, 
-    secretCNNMW 
+    secretSlzMW
 } = require("./constants");
 const { getReport, getToken } = require("./moTVCalls");
 
-const REPORTYPLAY = 119;
+const REPORTYPLAY = 161;
 const REPORTTIP = 49;
 const REPORTSLZ = 3;
-const REPORTCNN = 10;
 
 const getActiveCustomersYplay = () => getReport(
     SMSYPLAY+REPORT,
@@ -54,20 +51,8 @@ const getActiveCustomersSLZ = () => getReport(
     )
 );
 
-const getActiveCustomersCNN = () => getReport(
-    MWCNN+REPORT,
-    mwBody(REPORTCNN),
-    mwHeader(
-        getToken(
-            loginCNNMW,
-            secretCNNMW
-        )
-    )
-);
-
 module.exports = {
     getActiveCustomersYplay,
     getActiveCustomersTIP,
-    getActiveCustomersSLZ,
-    getActiveCustomersCNN
+    getActiveCustomersSLZ
 }
