@@ -1,15 +1,19 @@
-const validation = (yplay, sul, slz) => {
-    const yplayPlatform = validateYplaySoftx(yplay);
+const validation = (yplay, sul, slz, oops) => {
+    const yplayPlatform = validateYplay(yplay);
     const tipPlatform = validateTip(sul, slz);
+    const oopsPlatform = validateOops(oops);
 
     return {
         yplayPlatform,
-        tipPlatform
+        tipPlatform,
+        oopsPlatform
     }
 }
 
-const validateYplaySoftx = (data) => {
+const validateYplay = (data) => {
     const yplayPlatform = {
+        ollaTotal: 0,
+        ollaCustomers: [],
         softxxTotal: 0,
         softxxCustomers: [],
         yplayPlatformTotal: 0,
@@ -18,24 +22,27 @@ const validateYplaySoftx = (data) => {
     }
 
     for (let i = 0; i < data.length; i++) {
-        if(data[i].dealerid === 37){
+        if (data[i].dealerid === 37) {
             yplayPlatform.softxxTotal++;
             yplayPlatform.softxxCustomers.push(data[i])
-        }else{
+        } else if (data[i].vendorid === 29) {
+            yplayPlatform.ollaTotal++;
+            yplayPlatform.ollaCustomers.push(data[i])
+        } else {
             yplayPlatform.yplayPlatformTotal++;
             yplayPlatform.yplayPlatformCustomers.push(data[i]);
-        }        
+        }
     }
-    yplayPlatform.total = yplayPlatform.softxxTotal+yplayPlatform.yplayPlatformTotal;
+    yplayPlatform.total = yplayPlatform.softxxTotal + yplayPlatform.yplayPlatformTotal + yplayPlatform.ollaTotal;
     return yplayPlatform;
 }
 
 const validateTip = (sul, slz) => {
     for (let i = 0; i < sul.length; i++) {
-        sul[i].vendor = 'TIP';        
+        sul[i].vendor = 'TIP';
     }
     for (let i = 0; i < slz.length; i++) {
-        slz[i].vendor = 'SLZ';        
+        slz[i].vendor = 'SLZ';
     }
     return {
         sulTotal: sul.length,
@@ -43,6 +50,16 @@ const validateTip = (sul, slz) => {
         slzTotal: slz.length,
         slzCustomers: slz,
         total: sul.length + slz.length
+    }
+}
+
+const validateOops = (oops) => {
+    for (let i = 0; i < oops.length; i++) {
+        oops[i].vendor = 'OOPS';
+    }
+    return {
+        oopsTotal: oops.length,
+        oopsCustomers: oops
     }
 }
 

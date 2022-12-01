@@ -1,25 +1,29 @@
-const { 
-    SMSYPLAY, 
-    REPORT, 
-    smsBody, 
-    smsHeader, 
-    loginYplaySMS, 
-    secretYplaySMS, 
-    MWTIP, MWSLZ, MWCNN, 
-    mwBody, mwHeader, 
-    loginTipMW, 
-    secretTipMW, 
-    loginSlzMW, 
-    secretSlzMW
+const {
+    SMSYPLAY,
+    REPORT,
+    smsBody,
+    smsHeader,
+    loginYplaySMS,
+    secretYplaySMS,
+    MWTIP, MWSLZ, MWCNN,
+    mwBody, mwHeader,
+    loginTipMW,
+    secretTipMW,
+    loginSlzMW,
+    secretSlzMW,
+    MWOOPS,
+    loginOopsMW,
+    secretOopsMW
 } = require("./constants");
 const { getReport, getToken } = require("./moTVCalls");
 
 const REPORTYPLAY = 161;
 const REPORTTIP = 49;
 const REPORTSLZ = 3;
+const REPORTOOPS = 35;
 
 const getActiveCustomersYplay = () => getReport(
-    SMSYPLAY+REPORT,
+    SMSYPLAY + REPORT,
     smsBody(REPORTYPLAY),
     smsHeader(
         getToken(
@@ -30,7 +34,7 @@ const getActiveCustomersYplay = () => getReport(
 );
 
 const getActiveCustomersTIP = () => getReport(
-    MWTIP+REPORT,
+    MWTIP + REPORT,
     mwBody(REPORTTIP),
     mwHeader(
         getToken(
@@ -41,7 +45,7 @@ const getActiveCustomersTIP = () => getReport(
 );
 
 const getActiveCustomersSLZ = () => getReport(
-    MWSLZ+REPORT,
+    MWSLZ + REPORT,
     mwBody(REPORTSLZ),
     mwHeader(
         getToken(
@@ -51,8 +55,20 @@ const getActiveCustomersSLZ = () => getReport(
     )
 );
 
+const getActiveCustomersOOPS = () => getReport(
+    MWOOPS + REPORT,
+    mwBody(REPORTOOPS),
+    mwHeader(
+        getToken(
+            loginOopsMW,
+            secretOopsMW
+        )
+    )
+);
+
 module.exports = {
     getActiveCustomersYplay,
     getActiveCustomersTIP,
-    getActiveCustomersSLZ
+    getActiveCustomersSLZ,
+    getActiveCustomersOOPS
 }
