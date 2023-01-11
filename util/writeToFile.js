@@ -21,10 +21,41 @@ const writeToReport = (yplay, tip, slz, oops) => {
     reportREPORTTVInterno(yplayPlatform, tipPlatform, oopsPlatform);
 
     // Send email
-    sendEmail(FILENAMES).catch(e => console.log(e));
+    // sendEmail(FILENAMES).catch(e => console.log(e));
 }
 
-const reportREPORTTV = (yplayPlatform, tipPlatform, oopsPlatform) => {
+function reportREPORTTVInterno(yplayPlatform, tipPlatform, oopsPlatform) {
+    const reportData = [
+        {
+            name: 'SOFTXX',
+            total: yplayPlatform.softxxTotal,
+            customers: yplayPlatform.softxxCustomers,
+        },
+        {
+            name: 'OLLA',
+            total: yplayPlatform.ollaTotal,
+            customers: yplayPlatform.ollaCustomers,
+        },
+        {
+            name: 'TVN SUL',
+            total: tipPlatform.sulTotal,
+            customers: tipPlatform.sulCustomers,
+        },
+        {
+            name: 'TVN SLZ',
+            total: tipPlatform.slzTotal,
+            customers: tipPlatform.slzCustomers,
+        },
+        {
+            name: 'OOPS',
+            total: oopsPlatform.oopsTotal,
+            customers: oopsPlatform.oopsCustomers,
+        },
+    ]
+    reportData.forEach(data => genericReportREPORTTVInterno(data));
+}
+
+function reportREPORTTV(yplayPlatform, tipPlatform, oopsPlatform) {
     const workbook = new excel.Workbook();
     const worksheet = workbook.addWorksheet('Resultado', {
         sheetView: {
@@ -40,7 +71,6 @@ const reportREPORTTV = (yplayPlatform, tipPlatform, oopsPlatform) => {
     worksheet.column(1).setWidth(2);
     worksheet.column(2).setWidth(45);
     worksheet.column(3).setWidth(32);
-    worksheet.row(7).filter();
 
     worksheet.cell(2, 2, 2, 3, true).string('OPERADORES COM EPG REPORTV').style(headerStyle);
 
@@ -73,7 +103,7 @@ const reportREPORTTV = (yplayPlatform, tipPlatform, oopsPlatform) => {
     workbook.write(file.path);
 }
 
-const reportREPORTTVInterno = (yplayPlatform, tipPlatform, oopsPlatform) => {
+function genericReportREPORTTVInterno(data) {
     const workbook = new excel.Workbook();
     const worksheet = workbook.addWorksheet('Resultado', {
         sheetView: {
@@ -92,11 +122,9 @@ const reportREPORTTVInterno = (yplayPlatform, tipPlatform, oopsPlatform) => {
     worksheet.row(2).setHeight(35);
     worksheet.row(3).setHeight(9);
     worksheet.row(6).setHeight(9);
-    worksheet.row(14).setHeight(9);
     worksheet.column(1).setWidth(2);
     worksheet.column(2).setWidth(45);
     worksheet.column(3).setWidth(32);
-    worksheet.row(7).filter();
 
     worksheet.cell(2, 2, 2, 3, true).string('OPERADORES COM EPG REPORTV').style(headerStyle);
 
@@ -107,29 +135,15 @@ const reportREPORTTVInterno = (yplayPlatform, tipPlatform, oopsPlatform) => {
 
     worksheet.cell(7, 2).string('Operadores').style(headerStyle2);
     worksheet.cell(7, 3).string('Número de assinantes').style(headerStyle2);
-    worksheet.cell(8, 2).string('SOFTXX').style(dataStyle);
-    worksheet.cell(8, 3).number(yplayPlatform.softxxTotal).style(dataStyle);
-    worksheet.cell(9, 2).string('OLLA').style(dataStyle);
-    worksheet.cell(9, 3).number(yplayPlatform.ollaTotal).style(dataStyle);
-    worksheet.cell(10, 2).string('TVN SUL').style(dataStyle);
-    worksheet.cell(10, 3).number(tipPlatform.sulTotal).style(dataStyle);
-    worksheet.cell(11, 2).string('TVN SLZ').style(dataStyle);
-    worksheet.cell(11, 3).number(tipPlatform.slzTotal).style(dataStyle);
-    worksheet.cell(12, 2).string('OOPS').style(dataStyle);
-    worksheet.cell(12, 3).number(oopsPlatform.oopsTotal).style(dataStyle);
+    worksheet.cell(8, 2).string(data.name).style(dataStyle);
+    worksheet.cell(8, 3).number(data.total).style(dataStyle);
 
-    worksheet.cell(15, 2).string('Número total de assinantes:').style(headerStyle2);
-    worksheet.cell(15, 3).number((tipPlatform.total + yplayPlatform.softxxTotal + oopsPlatform.oopsTotal + yplayPlatform.ollaTotal)).style(dataStyle);
+    worksheet.cell(12, 2).string('Número total de assinantes:').style(headerStyle2);
+    worksheet.cell(12, 3).number(data.total).style(dataStyle);
     // END
 
     // Usuários worksheet begin
-    const customers = [
-        ...yplayPlatform.ollaCustomers,
-        ...yplayPlatform.softxxCustomers,
-        ...tipPlatform.sulCustomers,
-        ...tipPlatform.slzCustomers,
-        ...oopsPlatform.oopsCustomers,
-    ];
+
     const headerCustomers = ['ID', 'LOGIN', 'VENDOR'];
 
     worksheetCustomers.row(1).setHeight(9);
@@ -142,7 +156,7 @@ const reportREPORTTVInterno = (yplayPlatform, tipPlatform, oopsPlatform) => {
     headerCustomers.forEach((data, index) => {
         worksheetCustomers.cell(2, 2 + index).string(data).style(headerStyle2);
     });
-    customers.forEach((customer, index) => {
+    data.customers.forEach((customer, index) => {
         worksheetCustomers.cell(3 + index, 2).number(customer.id).style(dataStyle);
         worksheetCustomers.cell(3 + index, 3).string(customer.login).style(dataStyle);
         worksheetCustomers.cell(3 + index, 4).string(customer.dealerid === 37 ? 'Softxx' : customer.vendor).style(dataStyle);
@@ -151,7 +165,7 @@ const reportREPORTTVInterno = (yplayPlatform, tipPlatform, oopsPlatform) => {
 
     const file = {
         filename: `Operadores com EPG ReporTV(interno) - ${getCurrentMonthYearFull()}.xlsx`,
-        path: path.join(__dirname, '..', 'output', `Operadores com EPG ReporTV(interno) - ${getCurrentMonthYearFull()}.xlsx`)
+        path: path.join(__dirname, '..', 'output', `Operadores com EPG ReporTV(interno) - ${data.name.toUpperCase()} - ${getCurrentMonthYearFull()}.xlsx`)
     }
     insertFilenameToFilenames(file);
     workbook.write(file.path);
