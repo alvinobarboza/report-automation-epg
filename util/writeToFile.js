@@ -21,7 +21,7 @@ const writeToReport = (yplay, tip, slz, oops) => {
     reportREPORTTVInterno(yplayPlatform, tipPlatform, oopsPlatform);
 
     // Send email
-    // sendEmail(FILENAMES).catch(e => console.log(e));
+    sendEmail(FILENAMES).catch(e => console.log(e));
 }
 
 function reportREPORTTVInterno(yplayPlatform, tipPlatform, oopsPlatform) {
@@ -95,9 +95,11 @@ function reportREPORTTV(yplayPlatform, tipPlatform, oopsPlatform) {
     worksheet.cell(15, 2).string('Número total de assinantes:').style(headerStyle2);
     worksheet.cell(15, 3).number((tipPlatform.total + yplayPlatform.total + oopsPlatform.oopsTotal)).style(dataStyle);
 
+    const FILENAME = `Operadores com EPG ReporTV - ${getCurrentMonthYearFull()}.xlsx`;
+
     const file = {
-        filename: `Operadores com EPG ReporTV - ${getCurrentMonthYearFull()}.xlsx`,
-        path: path.join(__dirname, '..', 'output', `Operadores com EPG ReporTV - ${getCurrentMonthYearFull()}.xlsx`)
+        filename: FILENAME,
+        path: path.join(__dirname, '..', 'output', FILENAME)
     }
     insertFilenameToFilenames(file);
     workbook.write(file.path);
@@ -163,9 +165,11 @@ function genericReportREPORTTVInterno(data) {
     });
     // END
 
+    const FILENAME = `Operadores com EPG ReporTV(interno) - ${data.name.toUpperCase()} - ${getCurrentMonthYearFull()}.xlsx`;
+
     const file = {
-        filename: `Operadores com EPG ReporTV(interno) - ${getCurrentMonthYearFull()}.xlsx`,
-        path: path.join(__dirname, '..', 'output', `Operadores com EPG ReporTV(interno) - ${data.name.toUpperCase()} - ${getCurrentMonthYearFull()}.xlsx`)
+        filename: FILENAME,
+        path: path.join(__dirname, '..', 'output', FILENAME)
     }
     insertFilenameToFilenames(file);
     workbook.write(file.path);
