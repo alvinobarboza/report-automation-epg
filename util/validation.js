@@ -1,14 +1,30 @@
-const validation = (yplay, sul, slz, oops) => {
+const validation = (yplay, sul, slz, oops, colombia) => {
     const yplayPlatform = validateYplay(yplay);
     const tipPlatform = validateTip(sul, slz);
     const oopsPlatform = validateOops(oops);
+    const colombiaPlatform = validateColombia(colombia);
 
     return {
         yplayPlatform,
         tipPlatform,
-        oopsPlatform
+        oopsPlatform,
+        colombiaPlatform,
+    };
+};
+
+const validateColombia = (data) => {
+    const colombiaPlatform = {
+        name: 'Yplay CO.',
+        colombiaCustomers: [],
+        total: 0,
+    };
+
+    for (let i = 0; i < data.length; i++) {
+        colombiaPlatform.total++;
+        colombiaPlatform.colombiaCustomers.push(data[i]);
     }
-}
+    return colombiaPlatform;
+};
 
 const validateYplay = (data) => {
     const yplayPlatform = {
@@ -18,24 +34,27 @@ const validateYplay = (data) => {
         softxxCustomers: [],
         yplayPlatformTotal: 0,
         yplayPlatformCustomers: [],
-        total: 0
-    }
+        total: 0,
+    };
 
     for (let i = 0; i < data.length; i++) {
         if (data[i].dealerid === 37) {
             yplayPlatform.softxxTotal++;
-            yplayPlatform.softxxCustomers.push(data[i])
+            yplayPlatform.softxxCustomers.push(data[i]);
         } else if (data[i].vendorid === 29) {
             yplayPlatform.ollaTotal++;
-            yplayPlatform.ollaCustomers.push(data[i])
+            yplayPlatform.ollaCustomers.push(data[i]);
         } else {
             yplayPlatform.yplayPlatformTotal++;
             yplayPlatform.yplayPlatformCustomers.push(data[i]);
         }
     }
-    yplayPlatform.total = yplayPlatform.softxxTotal + yplayPlatform.yplayPlatformTotal + yplayPlatform.ollaTotal;
+    yplayPlatform.total =
+        yplayPlatform.softxxTotal +
+        yplayPlatform.yplayPlatformTotal +
+        yplayPlatform.ollaTotal;
     return yplayPlatform;
-}
+};
 
 const validateTip = (sul, slz) => {
     for (let i = 0; i < sul.length; i++) {
@@ -49,9 +68,9 @@ const validateTip = (sul, slz) => {
         sulCustomers: sul,
         slzTotal: slz.length,
         slzCustomers: slz,
-        total: sul.length + slz.length
-    }
-}
+        total: sul.length + slz.length,
+    };
+};
 
 const validateOops = (oops) => {
     for (let i = 0; i < oops.length; i++) {
@@ -59,8 +78,8 @@ const validateOops = (oops) => {
     }
     return {
         oopsTotal: oops.length,
-        oopsCustomers: oops
-    }
-}
+        oopsCustomers: oops,
+    };
+};
 
 module.exports = validation;
