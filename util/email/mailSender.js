@@ -1,14 +1,14 @@
-const nodemailer = require("nodemailer");
+const nodemailer = require('nodemailer');
 require('dotenv').config();
 
 const EMAIL = process.env.EMAIL;
 const PASSWD = process.env.PASSWORD;
 
-const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
+const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
 async function sendEmail(files) {
     try {
-        const date = (new Date()).toLocaleString();
+        const date = new Date().toLocaleString();
         const bodyHTML = require('./templateEmail');
 
         await delay(15000);
@@ -18,6 +18,7 @@ async function sendEmail(files) {
             'vinicius.okaeda@youcast.tv.br',
             'carlos.salce@youcast.tv.br',
             'alvino.barboza@youcast.tv.br',
+            'joao.kentaro@youcast.tv.br',
         ];
         const bodyPlainText = `
         Email enviado automáticamente,
@@ -25,7 +26,7 @@ async function sendEmail(files) {
         `;
 
         let transporter = nodemailer.createTransport({
-            host: "smtp.youcast.tv.br",
+            host: 'smtp.youcast.tv.br',
             port: 587,
             auth: {
                 user: EMAIL,
@@ -39,7 +40,7 @@ async function sendEmail(files) {
             subject: 'Relatórios último dia do mês', // Subject line
             text: bodyPlainText, // plain text body
             html: bodyHTML, // html body
-            attachments: files
+            attachments: files,
         });
     } catch (error) {
         console.log(error);
