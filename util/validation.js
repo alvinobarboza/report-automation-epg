@@ -12,18 +12,27 @@ const validation = (yplay, sul, slz, oops, colombia) => {
     };
 };
 
+/**
+ * @param {ColombiaReport[]} data
+ * @returns {ColombiaData[]}
+ */
 const validateColombia = (data) => {
-    const colombiaPlatform = {
-        name: 'Yplay CO.',
-        colombiaCustomers: [],
-        total: 0,
-    };
-
+    const colombiaData = [];
+    const vendor = {};
     for (let i = 0; i < data.length; i++) {
-        colombiaPlatform.total++;
-        colombiaPlatform.colombiaCustomers.push(data[i]);
+        if (vendor[data[i].vendorid]) {
+            vendor[data[i].vendorid].customers.push(data[i]);
+            vendor[data[i].vendorid].total++;
+        } else {
+            vendor[data[i].vendorid] = {
+                name: data[i].vendor,
+                customers: [data[i]],
+                total: 1,
+            };
+            colombiaData.push(vendor[data[i].vendorid]);
+        }
     }
-    return colombiaPlatform;
+    return colombiaData;
 };
 
 const validateYplay = (data) => {
@@ -83,3 +92,21 @@ const validateOops = (oops) => {
 };
 
 module.exports = validation;
+
+/**
+ * @typedef {Object} ColombiaReport
+ * @property {number} smsid
+ * @property {number} id
+ * @property {string} login
+ * @property {number} vendorid
+ * @property {vendor} vendor
+ * @property {string} dealer
+ * @property {number} dealerid
+ */
+
+/**
+ * @typedef {Object} ColombiaData
+ * @property {string} name
+ * @property {ColombiaReport[]} customers
+ * @property {number} total
+ */

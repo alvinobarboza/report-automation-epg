@@ -116,7 +116,10 @@ function reportREPORTTV(yplayPlatform, tipPlatform, oopsPlatform) {
     workbook.write(file.path);
 }
 
+/**@param {import('./validation').ColombiaData[]} data  */
 function reportColombia(data) {
+    const total = data.reduce((pre, curr) => pre + curr.customers.length, 0);
+
     const workbook = new excel.Workbook();
     const worksheet = workbook.addWorksheet('Resultado', {
         sheetView: {
@@ -151,14 +154,20 @@ function reportColombia(data) {
 
     worksheet.cell(7, 2).string('Operadores').style(headerStyle2);
     worksheet.cell(7, 3).string('Número de assinantes').style(headerStyle2);
-    worksheet.cell(8, 2).string(data.name).style(dataStyle);
-    worksheet.cell(8, 3).number(data.total).style(dataStyle);
 
+    let row = 8;
+    for (const vendor of data) {
+        worksheet.cell(row, 2).string(vendor.name).style(dataStyle);
+        worksheet.cell(row, 3).number(vendor.total).style(dataStyle);
+        row++;
+    }
+
+    row += 4;
     worksheet
-        .cell(12, 2)
+        .cell(row, 2)
         .string('Número total de assinantes:')
         .style(headerStyle2);
-    worksheet.cell(12, 3).number(data.total).style(dataStyle);
+    worksheet.cell(row, 3).number(total).style(dataStyle);
     // END
 
     // Usuários worksheet begin
@@ -178,7 +187,15 @@ function reportColombia(data) {
             .string(data)
             .style(headerStyle2);
     });
-    data.colombiaCustomers.forEach((customer, index) => {
+
+    /**@type {import('./validation').ColombiaReport[]} */
+    const customers = data.reduce((pre, curr) => {
+        for (const customer of curr.customers) {
+            pre.push(customer);
+        }
+        return pre;
+    }, []);
+    customers.forEach((customer, index) => {
         worksheetCustomers
             .cell(3 + index, 2)
             .number(customer.id)
@@ -194,7 +211,7 @@ function reportColombia(data) {
     });
     // END
 
-    const FILENAME = `Operadores com EPG ReporTV - ${data.name.toUpperCase()} - ${getCurrentMonthYearFull()}.xlsx`;
+    const FILENAME = `Operadores com EPG ReporTV - Yplay CO. - ${getCurrentMonthYearFull()}.xlsx`;
 
     const file = {
         filename: FILENAME,
