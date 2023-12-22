@@ -1,5 +1,9 @@
 const excel = require('excel4node');
-const { getLocaleDateString, getCurrentMonthYearFull } = require('./date');
+const {
+    getLocaleDateString,
+    getCurrentMonthYearFull,
+    getCurrentYearFullMonth,
+} = require('./date');
 const { dataStyle, headerStyle, headerStyle2 } = require('./styleExcel');
 const validation = require('./validation');
 const path = require('path');
@@ -127,11 +131,11 @@ function reportColombia(data) {
         },
     });
 
-    const worksheetCustomers = workbook.addWorksheet('Usuários', {
-        sheetView: {
-            showGridLines: false,
-        },
-    });
+    // const worksheetCustomers = workbook.addWorksheet('Usuários', {
+    //     sheetView: {
+    //         showGridLines: false,
+    //     },
+    // });
 
     // resultado worksheet begin
     worksheet.row(1).setHeight(9);
@@ -172,46 +176,46 @@ function reportColombia(data) {
 
     // Usuários worksheet begin
 
-    const headerCustomers = ['ID', 'LOGIN', 'VENDOR'];
+    // const headerCustomers = ['ID', 'LOGIN', 'VENDOR'];
 
-    worksheetCustomers.row(1).setHeight(9);
-    worksheetCustomers.column(1).setWidth(2);
-    worksheetCustomers.column(2).setWidth(32);
-    worksheetCustomers.column(3).setWidth(32);
-    worksheetCustomers.column(4).setWidth(32);
-    worksheetCustomers.row(2).filter();
+    // worksheetCustomers.row(1).setHeight(9);
+    // worksheetCustomers.column(1).setWidth(2);
+    // worksheetCustomers.column(2).setWidth(32);
+    // worksheetCustomers.column(3).setWidth(32);
+    // worksheetCustomers.column(4).setWidth(32);
+    // worksheetCustomers.row(2).filter();
 
-    headerCustomers.forEach((data, index) => {
-        worksheetCustomers
-            .cell(2, 2 + index)
-            .string(data)
-            .style(headerStyle2);
-    });
+    // headerCustomers.forEach((data, index) => {
+    //     worksheetCustomers
+    //         .cell(2, 2 + index)
+    //         .string(data)
+    //         .style(headerStyle2);
+    // });
 
-    /**@type {import('./validation').ColombiaReport[]} */
-    const customers = data.reduce((pre, curr) => {
-        for (const customer of curr.customers) {
-            pre.push(customer);
-        }
-        return pre;
-    }, []);
-    customers.forEach((customer, index) => {
-        worksheetCustomers
-            .cell(3 + index, 2)
-            .number(customer.id)
-            .style(dataStyle);
-        worksheetCustomers
-            .cell(3 + index, 3)
-            .string(customer.login)
-            .style(dataStyle);
-        worksheetCustomers
-            .cell(3 + index, 4)
-            .string(customer.dealerid === 37 ? 'Softxx' : customer.vendor)
-            .style(dataStyle);
-    });
+    // /**@type {import('./validation').ColombiaReport[]} */
+    // const customers = data.reduce((pre, curr) => {
+    //     for (const customer of curr.customers) {
+    //         pre.push(customer);
+    //     }
+    //     return pre;
+    // }, []);
+    // customers.forEach((customer, index) => {
+    //     worksheetCustomers
+    //         .cell(3 + index, 2)
+    //         .number(customer.id)
+    //         .style(dataStyle);
+    //     worksheetCustomers
+    //         .cell(3 + index, 3)
+    //         .string(customer.login)
+    //         .style(dataStyle);
+    //     worksheetCustomers
+    //         .cell(3 + index, 4)
+    //         .string(customer.dealerid === 37 ? 'Softxx' : customer.vendor)
+    //         .style(dataStyle);
+    // });
     // END
 
-    const FILENAME = `Operadores com EPG ReporTV - Yplay CO. - ${getCurrentMonthYearFull()}.xlsx`;
+    const FILENAME = `${getCurrentYearFullMonth()} EPG ReporTV - Yplay CO.xlsx`;
 
     const file = {
         filename: FILENAME,
