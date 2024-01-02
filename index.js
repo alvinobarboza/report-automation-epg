@@ -2,7 +2,6 @@ const { getToken } = require('./util/moTVCalls');
 const {
     getActiveCustomersYplay,
     getActiveCustomersTIP,
-    getActiveCustomersSLZ,
     getActiveCustomersOOPS,
     getColombiaYplay,
 } = require('./util/reportsEPG');
@@ -12,16 +11,14 @@ Promise.all([
     getActiveCustomersYplay(),
     getColombiaYplay(),
     getActiveCustomersTIP(),
-    getActiveCustomersSLZ(),
     getActiveCustomersOOPS(),
 ])
     .then((data) => {
         const yplay = data[0].response.rows;
         const colombia = data[1].response.rows;
         const tip = data[2].response.rows;
-        const slz = data[3].response.rows;
-        const oops = data[4].response.rows;
+        const oops = data[3].response.rows;
 
-        writeToReport(yplay, tip, slz, oops, colombia);
+        writeToReport(yplay, tip, oops, colombia);
     })
     .catch((e) => console.log(e));

@@ -15,9 +15,9 @@ function insertFilenameToFilenames(file) {
     FILENAMES.push(file);
 }
 
-const writeToReport = (yplay, tip, slz, oops, colombia) => {
+const writeToReport = (yplay, tip, oops, colombia) => {
     const { yplayPlatform, tipPlatform, oopsPlatform, colombiaPlatform } =
-        validation(yplay, tip, slz, oops, colombia);
+        validation(yplay, tip, oops, colombia);
     reportREPORTTV(yplayPlatform, tipPlatform, oopsPlatform);
     reportREPORTTVInterno(yplayPlatform, tipPlatform, oopsPlatform);
     reportColombia(colombiaPlatform);
@@ -41,11 +41,6 @@ function reportREPORTTVInterno(yplayPlatform, tipPlatform, oopsPlatform) {
             name: 'TVN SUL',
             total: tipPlatform.sulTotal,
             customers: tipPlatform.sulCustomers,
-        },
-        {
-            name: 'TVN SLZ',
-            total: tipPlatform.slzTotal,
-            customers: tipPlatform.slzCustomers,
         },
         {
             name: 'OOPS',

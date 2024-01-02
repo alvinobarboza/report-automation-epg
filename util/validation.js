@@ -1,6 +1,6 @@
-const validation = (yplay, sul, slz, oops, colombia) => {
+const validation = (yplay, sul, oops, colombia) => {
     const yplayPlatform = validateYplay(yplay);
-    const tipPlatform = validateTip(sul, slz);
+    const tipPlatform = validateTip(sul);
     const oopsPlatform = validateOops(oops);
     const colombiaPlatform = validateColombia(colombia);
 
@@ -65,19 +65,14 @@ const validateYplay = (data) => {
     return yplayPlatform;
 };
 
-const validateTip = (sul, slz) => {
+const validateTip = (sul) => {
     for (let i = 0; i < sul.length; i++) {
         sul[i].vendor = 'TIP';
-    }
-    for (let i = 0; i < slz.length; i++) {
-        slz[i].vendor = 'SLZ';
     }
     return {
         sulTotal: sul.length,
         sulCustomers: sul,
-        slzTotal: slz.length,
-        slzCustomers: slz,
-        total: sul.length + slz.length,
+        total: sul.length,
     };
 };
 

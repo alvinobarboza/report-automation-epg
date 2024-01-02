@@ -6,14 +6,11 @@ const {
     loginYplaySMS,
     secretYplaySMS,
     MWTIP,
-    MWSLZ,
     MWCNN,
     mwBody,
     mwHeader,
     loginTipMW,
     secretTipMW,
-    loginSlzMW,
-    secretSlzMW,
     MWOOPS,
     loginOopsMW,
     secretOopsMW,
@@ -23,7 +20,6 @@ const { getReport, getToken } = require('./moTVCalls');
 const REPORTYPLAY = 161;
 const REPORTYPLAYCO = 328;
 const REPORTTIP = 49;
-const REPORTSLZ = 3;
 const REPORTOOPS = 35;
 
 const getActiveCustomersYplay = () =>
@@ -47,13 +43,6 @@ const getActiveCustomersTIP = () =>
         mwHeader(getToken(loginTipMW, secretTipMW))
     );
 
-const getActiveCustomersSLZ = () =>
-    getReport(
-        MWSLZ + REPORT,
-        mwBody(REPORTSLZ),
-        mwHeader(getToken(loginSlzMW, secretSlzMW))
-    );
-
 const getActiveCustomersOOPS = () =>
     getReport(
         MWOOPS + REPORT,
@@ -65,6 +54,5 @@ module.exports = {
     getActiveCustomersYplay,
     getColombiaYplay,
     getActiveCustomersTIP,
-    getActiveCustomersSLZ,
     getActiveCustomersOOPS,
 };
