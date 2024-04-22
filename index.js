@@ -1,3 +1,4 @@
+const folderHandler = require('./util/folderHandler');
 const { getToken } = require('./util/moTVCalls');
 const {
     getActiveCustomersYplay,
@@ -22,6 +23,7 @@ Promise.all([
         const slz = data[3].response.rows;
         const oops = data[4].response.rows;
 
+        folderHandler();
         writeToReport(yplay, tip, slz, oops, colombia);
     })
     .catch((e) => console.log(e));

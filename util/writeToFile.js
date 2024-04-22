@@ -11,8 +11,22 @@ const sendEmail = require('./email/mailSender');
 
 const FILENAMES = [];
 
+/**
+ * @param {{filename: string, path:string}} file
+ */
 function insertFilenameToFilenames(file) {
     FILENAMES.push(file);
+}
+
+/**
+ * @param {string} filename
+ */
+function getFileData(filename) {
+    const folderName = getCurrentMonthYearFull();
+    return {
+        filename: filename,
+        path: path.join(__dirname, '..', 'output', folderName, filename),
+    };
 }
 
 const writeToReport = (yplay, tip, slz, oops, colombia) => {
@@ -110,14 +124,10 @@ function reportREPORTTV(yplayPlatform, tipPlatform, oopsPlatform) {
         )
         .style(dataStyle);
 
-    const FILENAME = `Operadores com EPG ReporTV - ${getCurrentMonthYearFull()}.xlsx`;
-
-    const file = {
-        filename: FILENAME,
-        path: path.join(__dirname, '..', 'output', FILENAME),
-    };
-    insertFilenameToFilenames(file);
-    workbook.write(file.path);
+    const filename = `Operadores com EPG ReporTV - ${getCurrentMonthYearFull()}.xlsx`;
+    const fileData = getFileData(filename);
+    insertFilenameToFilenames(fileData);
+    workbook.write(fileData.path);
 }
 
 /**@param {import('./validation').ColombiaData[]} data  */
@@ -215,14 +225,10 @@ function reportColombia(data) {
     // });
     // END
 
-    const FILENAME = `${getCurrentYearFullMonth()} EPG ReporTV - Yplay CO.xlsx`;
-
-    const file = {
-        filename: FILENAME,
-        path: path.join(__dirname, '..', 'output', FILENAME),
-    };
-    insertFilenameToFilenames(file);
-    workbook.write(file.path);
+    const filename = `${getCurrentYearFullMonth()} EPG ReporTV - Yplay CO.xlsx`;
+    const fileData = getFileData(filename);
+    insertFilenameToFilenames(fileData);
+    workbook.write(fileData.path);
 }
 
 function genericReportREPORTTVInterno(data) {
@@ -303,14 +309,10 @@ function genericReportREPORTTVInterno(data) {
     });
     // END
 
-    const FILENAME = `Operadores com EPG ReporTV(interno) - ${data.name.toUpperCase()} - ${getCurrentMonthYearFull()}.xlsx`;
-
-    const file = {
-        filename: FILENAME,
-        path: path.join(__dirname, '..', 'output', FILENAME),
-    };
-    insertFilenameToFilenames(file);
-    workbook.write(file.path);
+    const filename = `Operadores com EPG ReporTV(interno) - ${data.name.toUpperCase()} - ${getCurrentMonthYearFull()}.xlsx`;
+    const fileData = getFileData(filename);
+    insertFilenameToFilenames(fileData);
+    workbook.write(fileData.path);
 }
 
 module.exports = writeToReport;
