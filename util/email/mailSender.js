@@ -15,10 +15,10 @@ async function sendEmail(files) {
 
         const emails = [
             'alvino.barboza@youcast.tv.br',
-            'daniel.campos@youcast.tv.br',
-            'vinicius.okaeda@youcast.tv.br',
-            'carlos.salce@youcast.tv.br',
-            'joao.kentaro@youcast.tv.br',
+            // 'daniel.campos@youcast.tv.br',
+            // 'vinicius.okaeda@youcast.tv.br',
+            // 'carlos.salce@youcast.tv.br',
+            // 'joao.kentaro@youcast.tv.br',
         ];
         const bodyPlainText = `
         Email enviado automáticamente,
